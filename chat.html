@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bank Chatbot</title>
+  <style>
+    body { font-family: Arial; background:#f8f9fa; }
+    #chat { max-width:600px; margin:40px auto; background:white; padding:20px; border-radius:10px; }
+    #messages { height:300px; overflow-y:auto; border:1px solid #ccc; padding:10px; margin-bottom:10px; }
+    .user { text-align:right; color:blue; margin:5px; }
+    .bot { text-align:left; color:green; margin:5px; }
+    input { width:80%; padding:10px; }
+    button { padding:10px; }
+  </style>
+</head>
+<body>
+<div id="chat">
+  <h2>💬 Bank Chatbot</h2>
+  <div id="messages"></div>
+  <input id="msg" placeholder="Type a message...">
+  <button onclick="sendMsg()">Send</button>
+</div>
+<script>
+function append(text,who){
+  let div=document.createElement("div");
+  div.className=who;
+  div.textContent=text;
+  messages.appendChild(div);
+  messages.scrollTop=messages.scrollHeight;
+}
+function sendMsg(){
+  let m=msg.value; if(!m) return;
+  append(m,"user"); msg.value="";
+  fetch("/chat",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({message:m})})
+  .then(r=>r.json()).then(d=>append(d.reply,"bot"))
+}
+</script>
+</body>
+</html>

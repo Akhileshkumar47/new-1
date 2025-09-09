@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bank Chatbot - Login</title>
+  <style>
+    body { font-family: Arial; margin:40px; }
+    .box { max-width: 300px; margin:auto; padding:20px; border:1px solid #ccc; border-radius:10px; }
+    input { width:92%; padding:10px; margin:5px 0; }
+    button { width:100%; padding:10px; background:#007BFF; color:white; border:none; border-radius:5px; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Login</h2>
+    <input id="user" placeholder="Username"><br>
+    <input id="pw" type="password" placeholder="Password"><br>
+    <button onclick="doLogin()">Login</button>
+    <p>or <a href="#" onclick="doRegister()">Register</a></p>
+  </div>
+<script>
+function doLogin(){
+  fetch("/login",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({username:user.value,password:pw.value})})
+  .then(r=>r.json()).then(d=>{
+    if(d.ok){ window.location="/chat-ui"; }
+    else{ alert(d.error); }
+  })
+}
+function doRegister(){
+  fetch("/register",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({username:user.value,password:pw.value})})
+  .then(r=>r.json()).then(d=>{
+    if(d.ok){ alert("Registered! Now login."); }
+    else{ alert(d.error); }
+  })
+}
+</script>
+</body>
+</html>
